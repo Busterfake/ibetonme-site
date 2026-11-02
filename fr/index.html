@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I Bet On Me : arrêter de parier et de jouer</title>
+<meta name="description" content="Bloquez les sites de jeux d'argent, voyez l'argent économisé grandir en direct, et arrêtez une courte mission par jour. Sans compte.">
+<meta property="og:title" content="I Bet On Me : arrêter de parier et de jouer"><meta property="og:description" content="Bloquez les sites de jeux d'argent, voyez l'argent économisé grandir en direct, et arrêtez une courte mission par jour. Sans compte.">
+<meta property="og:type" content="website"><meta name="theme-color" content="#0B0F13">
+<link rel="alternate" hreflang="en" href="https://ibetonme.app/"><link rel="alternate" hreflang="fr" href="https://ibetonme.app/fr/">
+<link rel="icon" href="/mark.svg">
+<link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* One scroll in beats: live counter hero, the maths, the blocker, the missions, the price. */
+:root {
+  --bg: #0B0F13; --surface: #131A21; --raised: #1B242D; --ink: #EEF2EE; --muted: #9AA6AF;
+  --line: #222C35; --accent: #2ECC71; --accent-ink: #062B15; --loss: #F0544F;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root {
+  --bg: #F4F7F3; --surface: #FFFFFF; --raised: #EAF0EA; --ink: #0E1419; --muted: #56626B;
+  --line: #DCE3DC; --accent: #13874A; --accent-ink: #FFFFFF; --loss: #C8352F; color-scheme: light; } }
+@font-face { font-family: "Archivo"; font-style: normal; font-weight: 400 900; font-stretch: 62% 125%;
+  font-display: swap; src: url(/fonts/archivo-latin.woff2) format("woff2"); }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--body); }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+.top { display: flex; justify-content: space-between; align-items: center; padding-block: 22px; font-size: 15px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 700; text-decoration: none; }
+.brand img { width: 34px; height: 20px; }
+.top nav { display: flex; gap: 18px; align-items: center; }
+.top nav a { color: var(--muted); text-decoration: none; }
+.badge { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: var(--bg);
+  border-radius: 14px; padding: 10px 18px; text-decoration: none; font-weight: 600; line-height: 1.2; }
+.badge svg { width: 22px; height: 22px; fill: currentColor; flex: none; }
+.badge small { display: block; font-size: 11px; font-weight: 500; opacity: .8; }
+.badge.soon { background: var(--raised); color: var(--ink); }
+
+/* Hero */
+.hero { padding-block: 40px 72px; display: grid; gap: 44px; grid-template-columns: 1.1fr .9fr; align-items: center; }
+.hero h1 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(44px, 7.4vw, 84px);
+  line-height: .95; letter-spacing: -.01em; margin: 0 0 20px; text-wrap: balance; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lead { font-size: 20px; color: var(--muted); max-width: 34ch; margin: 0 0 28px; }
+.hero .cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.hero .cta p { margin: 0; color: var(--muted); font-size: 14px; }
+.calc { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 22px; display: grid; gap: 16px; min-width: 0; }
+.calc .q { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; font-weight: 600; }
+.calc .amount { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 4px; }
+.calc .amount output { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: 38px; line-height: 1; font-variant-numeric: tabular-nums; }
+.calc .amount span { color: var(--muted); font-size: 15px; }
+.calc input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 36px; background: transparent; margin: 0; cursor: pointer; }
+.calc input[type=range]::-webkit-slider-runnable-track { height: 8px; border-radius: 99px;
+  background: linear-gradient(to right, var(--accent) var(--fill, 30%), var(--raised) var(--fill, 30%)); }
+.calc input[type=range]::-moz-range-track { height: 8px; border-radius: 99px; background: var(--raised); }
+.calc input[type=range]::-moz-range-progress { height: 8px; border-radius: 99px; background: var(--accent); }
+.calc input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -10px; border-radius: 50%;
+  background: var(--ink); border: 4px solid var(--accent); box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+.calc input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); border: 4px solid var(--accent); }
+.seg button { font: inherit; font-size: 14px; color: var(--ink); background: var(--raised); border: 1px solid transparent;
+  border-radius: 99px; padding: 7px 14px; cursor: pointer; font-variant-numeric: tabular-nums; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; background: var(--raised); border-radius: 99px; padding: 4px; }
+.seg button { background: transparent; border-radius: 99px; }
+.seg button[aria-pressed=true] { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.result { border-top: 1px solid var(--line); padding-top: 16px; }
+.result .lab { margin: 0; color: var(--muted); font-size: 15px; }
+.result .big { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: clamp(52px, 7vw, 76px); line-height: 1;
+  color: var(--accent); margin: 4px 0 6px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.result .buy { margin: 0; font-size: 17px; min-height: 1.6em; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { background: var(--bg); border-radius: 14px; padding: 12px 14px; min-width: 0; }
+.tile b { display: block; font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 22px; line-height: 1.1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tile span { display: block; color: var(--muted); font-size: 13px; line-height: 1.35; margin-top: 4px; }
+.tile.loss b { color: var(--loss); }
+.calc .note { font-size: 12px; color: var(--muted); margin: -4px 0 0; }
+
+/* Sunrise intro: the logo's sun rises over its horizon, then the page shows. First visit of a
+   session only, skipped with reduced motion, never blocks the page (it fades out after ~2.7 s; a tap skips it). */
+.sunrise { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; place-items: center;
+  animation: sunrise-out .5s ease 2.2s forwards; }
+.sunrise.skip { display: none; }
+.sunrise .stage { display: grid; justify-items: center; gap: 18px; }
+.sunrise svg { width: min(220px, 50vw); height: auto; overflow: visible; }
+.sunrise .sun { transform: translateY(240px); animation: sun-up .9s cubic-bezier(.2,.8,.2,1) .2s forwards; }
+.sunrise .ray { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.4);
+  animation: ray-in .35s ease-out forwards; }
+.sunrise .ray:nth-child(1) { animation-delay: .75s; } .sunrise .ray:nth-child(5) { animation-delay: .75s; }
+.sunrise .ray:nth-child(2) { animation-delay: .85s; } .sunrise .ray:nth-child(4) { animation-delay: .85s; }
+.sunrise .ray:nth-child(3) { animation-delay: .95s; }
+.sunrise .horizon { stroke-dasharray: 656; stroke-dashoffset: 656; animation: draw .5s ease-out forwards; }
+.sunrise .word { font-weight: 700; font-size: 20px; letter-spacing: .01em; opacity: 0; animation: fade-up .4s ease-out 1s forwards; }
+@keyframes sun-up { to { transform: translateY(0); } }
+@keyframes ray-in { to { opacity: 1; transform: scale(1); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes sunrise-out { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .sunrise { display: none; } }
+
+/* Sections */
+section { padding-block: 72px; border-top: 1px solid var(--line); }
+.kicker { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; font-weight: 600; }
+h2 { font-family: var(--display); font-stretch: 80%; font-weight: 800; font-size: clamp(32px, 5vw, 52px);
+  line-height: 1; margin: 0 0 18px; letter-spacing: -.005em; text-wrap: balance; max-width: 20ch; }
+.intro { color: var(--muted); font-size: 19px; max-width: 56ch; margin: 0 0 36px; }
+
+/* The maths: three figures */
+.figures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.fig { padding: 24px 0 0; border-top: 3px solid var(--loss); min-width: 0; }
+.fig .n { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: clamp(48px, 6vw, 68px); line-height: 1; margin: 0 0 10px; font-variant-numeric: tabular-nums; }
+.fig p { margin: 0; color: var(--ink); }
+.fig .src { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+/* Facts: one compact band */
+.facts { padding-block: 56px; }
+.facts h2 { max-width: 26ch; font-size: clamp(28px, 4vw, 42px); margin-bottom: 28px; }
+.facts .figures { gap: 20px; }
+.facts .fig { padding-top: 16px; }
+.facts .fig .n { font-size: clamp(40px, 5vw, 56px); margin-bottom: 6px; }
+.facts .scale { color: var(--muted); font-size: 13px; margin: 22px 0 0; }
+
+/* Blocker: the moment, drawn as a phone screen */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+/* The app is dark-only, so its screen stays dark in both themes. */
+.phone { justify-self: center; width: min(320px, 100%); aspect-ratio: 9 / 18.5; border-radius: 44px; background: #0D0F14; color: #FFFFFF;
+  border: 10px solid #23262E; box-shadow: 0 30px 60px -30px rgba(0,0,0,.45); padding: 40px 24px; display: flex; flex-direction: column; justify-content: center; gap: 14px; text-align: center; }
+.phone .day { font-size: 14px; color: rgba(255,255,255,.62); margin: 0; }
+.phone .big { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: 54px; line-height: 1; color: #2ECC71; margin: 0; }
+.phone .why { font-size: 17px; margin: 6px 0; }
+.phone .btn { margin-top: 10px; background: #2ECC71; color: #062B15; border-radius: 14px; padding: 13px; font-weight: 700; }
+.phone .ghost { color: rgba(255,255,255,.62); font-size: 14px; }
+.ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+.ticks li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; }
+.ticks li::before { content: ""; width: 22px; height: 22px; margin-top: 3px; border-radius: 50%;
+  background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23062B15' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.ticks b { display: block; }
+.ticks span { color: var(--muted); }
+.honest { margin-top: 26px; padding: 18px 20px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); font-size: 15px; }
+
+/* Missions */
+.missions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mission { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; min-width: 0; }
+.mission .d { font-size: 13px; color: var(--accent); font-weight: 700; margin: 0 0 8px; }
+.mission h3 { font-size: 19px; margin: 0 0 6px; line-height: 1.25; }
+.mission p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* Price */
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+.plan { border: 1px solid var(--line); border-radius: 22px; padding: 26px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.plan.main { border: 2px solid var(--accent); background: var(--surface); position: relative; }
+.plan h3 { margin: 0; font-size: 17px; color: var(--muted); font-weight: 600; }
+.plan .p { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 44px; line-height: 1; margin: 0; }
+.plan .p small { font-family: var(--body); font-size: 16px; font-weight: 500; color: var(--muted); }
+.plan ul { margin: 0; padding-left: 20px; color: var(--ink); font-size: 15px; display: grid; gap: 6px; }
+.plan .tag { position: absolute; top: -13px; left: 24px; background: var(--accent); color: var(--accent-ink); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.fineprint { color: var(--muted); font-size: 14px; margin-top: 22px; max-width: 70ch; }
+
+/* Close */
+.close { text-align: center; padding-block: 88px; }
+.close h2 { margin-left: auto; margin-right: auto; }
+.close .intro { margin-left: auto; margin-right: auto; }
+.help { background: var(--surface); border-top: 1px solid var(--line); padding-block: 28px; color: var(--muted); font-size: 15px; }
+.help b { color: var(--ink); }
+footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display: flex; gap: 18px; flex-wrap: wrap; }
+footer a { color: var(--muted); }
+.sources { font-size: 12px; color: var(--muted); }
+.sources ol { padding-left: 18px; margin: 8px 0 0; }
+
+@media (max-width: 820px) {
+  .hero, .split { grid-template-columns: 1fr; }
+  .facts .figures { gap: 14px; }
+  .hero { padding-block: 16px 56px; gap: 32px; }
+  .figures, .missions, .plans { grid-template-columns: 1fr; }
+  .calc { padding: 18px; }
+  .phone { order: 2; }
+  section { padding-block: 56px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style></head>
+<body>
+
+<div class="sunrise" id="sunrise" aria-hidden="true">
+  <div class="stage">
+    <svg viewBox="110 190 804 470">
+      <defs><clipPath id="above"><rect x="110" y="0" width="804" height="612"/></clipPath></defs>
+      <g clip-path="url(#above)"><path class="sun" d="M276 612 A 236 236 0 0 1 748 612 Z" fill="var(--accent)"/></g>
+      <g stroke="var(--accent)" stroke-width="74" stroke-linecap="round">
+        <path class="ray" d="M239.4 501.9 L167.1 472.6"/><path class="ray" d="M347.6 368.3 L304.0 303.6"/>
+        <path class="ray" d="M512.0 318.0 L512.0 240.0"/><path class="ray" d="M676.4 368.3 L720.0 303.6"/>
+        <path class="ray" d="M784.6 501.9 L856.9 472.6"/>
+      </g>
+      <path class="horizon" d="M184 612 L840 612" stroke="var(--accent)" stroke-width="72" stroke-linecap="round"/>
+    </svg>
+    <span class="word">I Bet On Me</span>
+  </div>
+</div>
+<script>
+(function () {
+  // Once per visit: coming back from Privacy or switching language doesn't replay it.
+  var el = document.getElementById("sunrise");
+  try { if (sessionStorage.getItem("sunrise")) { el.classList.add("skip"); return; } sessionStorage.setItem("sunrise", "1"); } catch (e) {}
+  el.addEventListener("animationend", function (e) { if (e.animationName === "sunrise-out") el.remove(); });
+  el.addEventListener("click", function () { el.remove(); });
+})();
+</script>
+
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="/fr/"><img src="/mark.svg" alt="">I Bet On Me</a>
+  <nav><a href="#prix">Prix</a><a href="/">English</a></nav>
+</header>
+
+<div class="hero">
+  <div>
+    <h1>Le pari que vous ne faites pas, c'est celui <em>que vous gagnez.</em></h1>
+    <p class="lead">I Bet On Me bloque les applis et sites de jeux d'argent, compte chaque euro économisé, et vous accompagne pour arrêter, une courte mission par jour.</p>
+    <div class="cta"><span class="badge soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1-3.2-1 .1-2.2.7-3 1.5-.6.7-1.2 1.9-1.1 3 1.2.1 2.3-.6 3.1-1.3z"/></svg><span>Bientôt<small>sur l'App Store</small></span></span><p>iPhone · Français et anglais · Sans compte</p></div>
+  </div>
+  <div class="calc" id="calc">
+    <div>
+      <p class="q"><label for="weekly">Combien misez-vous par semaine ?</label></p>
+      <div class="amount"><output for="weekly">50 €</output><span>par semaine</span></div>
+      <input type="range" id="weekly" min="0" max="18" step="1" value="6" aria-label="Montant par semaine">
+    </div>
+    <div class="seg" role="group" aria-label="Durée"><button type="button" data-y="1">1 an</button><button type="button" data-y="5">5 ans</button><button type="button" data-y="10">10 ans</button></div>
+    <div class="result" aria-live="polite">
+      <p class="lab">Arrêtez maintenant, et en 5 ans vous gardez</p>
+      <p class="big">13 036 €</p>
+      <p class="buy">De quoi refaire votre cuisine.</p>
+    </div>
+    <div class="tiles">
+      <div class="tile loss"><b data-t="day">7,14 €</b><span>ce que le jeu vous coûte chaque jour</span></div>
+      <div class="tile loss"><b data-t="house">587 €</b><span>gardés par la seule marge des opérateurs en 5 ans [1]</span></div>
+    </div>
+    <p class="note">L'appli le calcule en direct à partir de ce que vous misiez, dès le jour où vous arrêtez.</p>
+  </div>
+  </div>
+</div>
+</div>
+
+<section class="facts"><div class="wrap">
+  <p class="kicker">Vous n'êtes pas seul</p>
+  <h2>1,2 million de Français ont un problème avec le jeu. Ce n'est pas vous, c'est le système.</h2>
+  <div class="figures">
+    <div class="fig"><p class="n">1 sur 6</p><p>joueurs de casino en ligne et de machines à sous développe un problème de jeu. 1 parieur sportif sur 11.</p><p class="src">Lancet Public Health, 2024 [6]</p></div>
+    <div class="fig"><p class="n">4×</p><p>plus de « presque gagné » que de gains. Le cerveau le vit comme un gain.</p><p class="src">Clark et al., Neuron, 2009 [2]</p></div>
+    <div class="fig"><p class="n">60&#8239;%</p><p>de ce que gagnent les sites de jeux en ligne en France viennent de joueurs en perte de contrôle.</p><p class="src">ANJ, mai 2026 [5]</p></div>
+  </div>
+  <p class="src scale">810 000 Français à risque modéré et 360 000 joueurs excessifs [3]. Au Royaume-Uni, environ 1 adulte sur 40 [4].</p>
+</div></section>
+<section><div class="wrap split">
+  <div>
+    <p class="kicker">Quand l'envie arrive</p>
+    <h2>Ouvrez une appli de paris. Retrouvez-vous à la place.</h2>
+    <ul class="ticks">
+      <li><div><b>Applis et sites de jeux bloqués</b><span>Avec Temps d'écran, sur votre iPhone.</span></div></li>
+      <li><div><b>Votre raison, et votre argent</b><span>L'écran de blocage vous rappelle pourquoi vous arrêtez et ce que vous avez économisé.</span></div></li>
+      <li><div><b>24 heures pour le désactiver</b><span>L'envie passe en quelques minutes. Vous pouvez toujours annuler, mais pas sur un coup de tête.</span></div></li>
+      <li><div><b>Le SOS, gratuit pour toujours</b><span>Respirer, ce qui se passe après le pari, votre personne de confiance, la ligne d'aide de votre pays.</span></div></li>
+    </ul>
+    <p class="honest">Aucune appli ne peut rendre un blocage impossible à désactiver : votre téléphone vous appartient. Nous le disons franchement, et rendons le moment de la tentation bien plus difficile.</p>
+  </div>
+  <div class="phone" aria-hidden="true">
+    <p class="day">Jour 23 sans parier</p>
+    <p class="big">164 €</p>
+    <p class="day">économisés</p>
+    <p class="why">« Pour ma fille, et pour moi. »</p>
+    <div class="btn">Ouvrir le SOS</div>
+    <div class="ghost">Fermer</div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="kicker">Un programme, pas un simple compteur</p>
+  <h2>Une courte mission par jour. Chacune change quelque chose.</h2>
+  <p class="intro">Conçues à partir de la recherche sur ce qui aide à arrêter. Elles s'adaptent à votre jeu, paris sportifs, casino, poker ou loto, et à votre pays.</p>
+  <div class="missions">
+    <div class="mission"><p class="d">Jour 1</p><h3>Coupez le bruit</h3><p>Désactivez les notifications et les offres faites pour vous faire revenir.</p></div>
+    <div class="mission"><p class="d">Jour 8</p><h3>Bloquez le jeu à votre banque</h3><p>Les étapes exactes pour votre banque, et une vraie solution quand elle n'en propose pas.</p></div>
+    <div class="mission"><p class="d">Jour 9</p><h3>La marge des opérateurs</h3><p>Un petit quiz, puis ce qu'elle vous a vraiment coûté, avec vos propres mises.</p></div>
+    <div class="mission"><p class="d">Jour 11</p><h3>Le « presque gagné »</h3><p>Lancez quatre pièces dix fois et sentez pourquoi le « presque » fait rejouer.</p></div>
+    <div class="mission"><p class="d">Jour 12</p><h3>Talent ou chance ?</h3><p>Six cartes à glisser. Les croyances qui font rejouer, vérifiées par des études.</p></div>
+    <div class="mission"><p class="d">Jour 13</p><h3>L'interdiction de jeux</h3><p>Le dispositif officiel de votre pays, expliqué sur une carte, avant de vous décider.</p></div>
+  </div>
+</div></section>
+
+<section id="prix"><div class="wrap">
+  <p class="kicker">Un prix honnête</p>
+  <h2>Moins qu'un pari. Résiliable à tout moment.</h2>
+  <p class="intro">L'aide dans un moment difficile n'est jamais payante.</p>
+  <div class="plans">
+    <div class="plan"><h3>Gratuit</h3><p class="p">0 €</p><ul><li>Compteur en direct</li><li>Le SOS, toujours</li><li>Noter un pari, sans culpabiliser</li><li>Les 3 premières missions</li><li>Missions blocage bancaire et interdiction de jeux</li></ul></div>
+    <div class="plan main"><span class="tag">7 jours offerts</span><h3>Pro annuel</h3><p class="p">39,99 €<small> / an</small></p><ul><li>Le bloqueur de jeux</li><li>L'argent économisé, en direct</li><li>Toutes les missions</li><li>Tout le gratuit</li></ul></div>
+    <div class="plan"><h3>Pro mensuel</h3><p class="p">9,99 €<small> / mois</small></p><ul><li>Tout Pro</li><li>Sans essai</li></ul></div>
+  </div>
+  <p class="fineprint">L'essai gratuit concerne l'abonnement annuel uniquement. L'appli vous prévient 2 jours avant la fin. Résiliation dans les Réglages de l'iPhone, en touchant votre nom, puis Abonnements. Prix indicatifs : l'App Store affiche le prix de votre pays.</p>
+</div></section>
+
+<section class="close"><div class="wrap">
+  <h2>Cette fois, pariez sur vous.</h2>
+  <p class="intro">Confidentiel par conception : sans compte, sans pub, rien ne quitte votre téléphone.</p>
+  <span class="badge soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1-3.2-1 .1-2.2.7-3 1.5-.6.7-1.2 1.9-1.1 3 1.2.1 2.3-.6 3.1-1.3z"/></svg><span>Bientôt<small>sur l'App Store</small></span></span>
+</div></section>
+
+<div class="help"><div class="wrap">
+  <b>Besoin de parler à quelqu'un maintenant ?</b> France : Joueurs Info Service, 09 74 75 13 13 (appel non surtaxé). Belgique, Suisse, Canada : la ligne d'aide de votre pays, dans l'appli. I Bet On Me est une aide pour arrêter, pas un traitement médical.
+</div></div>
+
+<div class="wrap">
+  <div class="sources"><ol>
+    <li>À une cote de 1,91, il faut gagner 1 ÷ 1,91 = 52,4 % des paris. À cinquante-cinquante, on perd 4,5 % de chaque mise.</li>
+    <li>Quatre pièces : 25 % de chances d'en avoir 3 sur 4, 6,25 % d'avoir les 4. Clark L. et al., « Gambling near-misses enhance motivation to gamble », Neuron 61(3), 2009.</li>
+    <li>OFDT, « La pratique des jeux d'argent et de hasard en France en 2023 » : 1,7 % des 18-75 ans à risque modéré (810 000), 0,8 % joueurs excessifs (360 000).</li>
+    <li>Gambling Commission, Gambling Survey for Great Britain, rapport 2025 : 2,4 % des adultes ont un score PGSI de 8 ou plus, soit environ 1,3 million de personnes. D'autres enquêtes trouvent des taux plus bas.</li>
+    <li>Autorité nationale des jeux, 13 mai 2026 : les joueurs à forte probabilité d'être excessifs ont généré 1,2 Md€, soit 60 % du produit brut des jeux en ligne (second semestre 2025).</li>
+    <li>Tran L.T. et al., « The prevalence of gambling and problematic gambling: a systematic review and meta-analysis », Lancet Public Health 9, 2024 : jeu problématique chez 15,8 % des adultes qui jouent au casino en ligne ou aux machines à sous, 8,9 % chez les parieurs sportifs.</li>
+  </ol></div>
+  <footer><a href="/fr/privacy/">Confidentialité</a><a href="/fr/terms/">Conditions</a><a href="mailto:hello@ibetonme.app">hello@ibetonme.app</a><span>&copy; 2026 I Bet On Me</span></footer>
+</div>
+<script>var EXAMPLES = {"levels": [3, 5, 7, 10, 15, 25, 40, 60, 90, 130, 200, 300, 450, 700, 1000, 1500, 2200, 3300, 5000, 7500, 11000, 16000, 25000, 35000], "items": [["vous offrir un café et un croissant", "vous offrir un bouquet d'herbes fraîches", "prendre un journal et un café"], ["vous offrir un magazine pour ce soir", "acheter un sac de bons fruits", "manger une glace au soleil"], ["prendre un smoothie en rentrant", "offrir un bouquet de fleurs", "acheter du pain frais et du fromage"], ["vous offrir un nouveau carnet", "mettre une plante chez vous", "déjeuner à votre endroit préféré"], ["aller au cinéma", "commander un dîner à emporter", "vous offrir un nouveau livre", "prendre un cocktail avec un ami"], ["faire une soirée pizza à deux", "payer un mois de streaming", "vous faire couper les cheveux", "acheter un jeu de société pour la famille"], ["vous offrir un T-shirt qui vous plaît vraiment", "dîner à deux dans un endroit simple"], ["faire un bon dîner au restaurant", "vous offrir un nouveau jean", "vous offrir un massage", "passer une journée de sortie avec les enfants", "payer un mois de salle de sport"], ["faire les courses de la semaine", "aller à un concert", "vous offrir un bon parfum"], ["vous offrir de bonnes chaussures de course", "inviter trois personnes à dîner", "vous offrir une nouvelle veste"], ["vous offrir un nouveau casque audio", "passer une journée au spa à deux", "suivre un cours de cuisine avec un ami"], ["partir un week-end en train", "acheter une très bonne machine à café", "passer une journée en famille dans un parc d'attractions"], ["acheter une console de jeux", "acheter un nouveau vélo", "passer un week-end dans un chalet douillet"], ["partir un week-end en ville à deux", "acheter un très bon matelas", "faire un mois de courses"], ["acheter un nouveau téléphone", "passer un long week-end à Rome"], ["partir une semaine à la mer", "acheter un nouvel ordinateur portable", "acheter un beau fauteuil et une lampe"], ["acheter un canapé neuf", "faire un road trip à travers le pays", "vous constituer une épargne pour dormir tranquille"], ["passer deux semaines au Portugal", "suivre une formation pour apprendre quelque chose de nouveau", "meubler entièrement une pièce"], ["partir au Japon", "partir en vacances en famille à l'étranger", "acheter un scooter pour la ville", "mettre de côté une année d'épargne pour vos enfants"], ["acheter une voiture d'occasion fiable", "faire le tour de l'Asie du Sud-Est", "refaire votre salle de bain"], ["passer deux semaines aux Maldives", "refaire votre cuisine", "voyager un mois en Amérique du Sud"], ["acheter une voiture neuve", "organiser un mariage", "mettre six mois d'épargne de côté"], ["faire un apport pour un logement", "prendre une année pour voyager", "payer l'essentiel d'une voiture électrique neuve"], ["payer comptant une voiture neuve", "vous lancer pour de bon vers la propriété", "vivre une année sans soucis d'argent"]]}; window.CALC_TEXT = {"enough": "De quoi %@.", "lab": {"1": "Arrêtez maintenant, et en 1 an vous gardez", "5": "Arrêtez maintenant, et en 5 ans vous gardez", "10": "Arrêtez maintenant, et en 10 ans vous gardez"}, "house": {"1": "gardés par la seule marge des opérateurs en 1 an [1]", "5": "gardés par la seule marge des opérateurs en 5 ans [1]", "10": "gardés par la seule marge des opérateurs en 10 ans [1]"}};</script>
+
+<script>
+(function () {
+  // Same rules as the app: a year is 365/7 weeks of the weekly amount (Projection.yearlyCost), and
+  // "That's enough for" uses the app's own levels and examples (EXAMPLES, built from the app).
+  var root = document.getElementById("calc");
+  if (!root) return;
+  var lang = document.documentElement.lang, T = window.CALC_TEXT;
+  var cur = new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-US",
+    { style: "currency", currency: lang === "fr" ? "EUR" : "USD", maximumFractionDigits: 0 });
+  var cur2 = new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-US",
+    { style: "currency", currency: lang === "fr" ? "EUR" : "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var steps = [10, 15, 20, 25, 30, 40, 50, 60, 75, 100, 125, 150, 200, 250, 300, 400, 500, 750, 1000];
+  var slider = root.querySelector("input[type=range]"), out = root.querySelector("output");
+  var seg = root.querySelectorAll(".seg button");
+  var big = root.querySelector(".big"), lab = root.querySelector(".result .lab"), buy = root.querySelector(".buy");
+  var day = root.querySelector("[data-t=day]"), house = root.querySelector("[data-t=house]");
+  var houseLab = house.nextElementSibling;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Starts on the figure already in the HTML: the first frame is complete, and only changes animate.
+  var weekly = 50, years = 5, shown = 50 * 365 / 7 * 5, anim;
+
+  function example(amount) {
+    var level = -1;
+    for (var i = 0; i < EXAMPLES.levels.length; i++) if (EXAMPLES.levels[i] <= amount) level = i;
+    if (level < 0) return "";
+    var list = EXAMPLES.items[level];
+    // Stable per amount, so the line doesn't flicker while dragging back and forth.
+    return T.enough.replace("%@", list[Math.round(amount) % list.length]);
+  }
+  function countTo(target) {
+    cancelAnimationFrame(anim);
+    if (reduce) { shown = target; big.textContent = cur.format(target); return; }
+    var from = shown, t0 = performance.now();
+    (function frame(t) {
+      var k = Math.min(1, (t - t0) / 450), e = 1 - Math.pow(1 - k, 3);
+      shown = from + (target - from) * e;
+      big.textContent = cur.format(shown);
+      if (k < 1) anim = requestAnimationFrame(frame);
+    })(t0);
+  }
+  function render() {
+    var yearly = weekly * 365 / 7, total = yearly * years;
+    out.textContent = cur.format(weekly);
+    slider.style.setProperty("--fill", (slider.value / (steps.length - 1) * 100) + "%");
+    lab.textContent = T.lab[years];
+    countTo(total);
+    buy.textContent = example(total);
+    day.textContent = cur2.format(weekly / 7);
+    house.textContent = cur.format(total * 0.045);
+    houseLab.textContent = T.house[years];
+    seg.forEach(function (b) { b.setAttribute("aria-pressed", String(+b.dataset.y === years)); });
+  }
+  slider.addEventListener("input", function () { weekly = steps[+slider.value]; render(); });
+  seg.forEach(function (b) { b.addEventListener("click", function () { years = +b.dataset.y; render(); }); });
+  slider.value = steps.indexOf(weekly);
+  render();
+})();
+</script>
+
+</body></html>
